@@ -1489,7 +1489,7 @@ backtraceFramesForLogMessage(int frameCount,
     // use dladdr() instead of backtrace_symbols()
     QString cachedLibrary;
     const char *cachedFname = nullptr;
-    auto decodeFrame = [&](void *addr) -> DecodedFrame {
+    auto decodeFrame = [&](const void *addr) -> DecodedFrame {
         Dl_info info;
         if (!dladdr(addr, &info))
             return {};
@@ -1539,7 +1539,7 @@ backtraceFramesForLogMessage(int frameCount,
     };
 #  endif
 
-    for (void *&addr : buffer) {
+    for (void * const&addr : buffer) {
         DecodedFrame frame = decodeFrame(addr);
         if (!frame.library.isEmpty()) {
             if (frame.function.isEmpty())
