@@ -1520,8 +1520,9 @@ backtraceFramesForLogMessage(int frameCount,
     // This code is protected by QMessagePattern::mutex so it is thread safe on all compilers
     static const QRegularExpression rx(QStringLiteral("^(?:[^(]*/)?([^(/]+)\\(([^+]*)(?:[\\+[a-f0-9x]*)?\\) \\[[a-f0-9x]*\\]$"));
 
-    auto decodeFrame = [&](const void *&addr) -> DecodedFrame {
-        QScopedPointer<char*, QScopedPointerPodDeleter> strings(backtrace_symbols(&addr, 1));
+    auto decodeFrame = [&](const void *addr) -> DecodedFrame {
+        void *nonConstAddr = const_cast<void *>(addr);
+        QScopedPointer<char*, QScopedPointerPodDeleter> strings(backtrace_symbols(&nonConstAddr, 1));
         QString trace = QString::fromUtf8(strings.data()[0]);
         QRegularExpressionMatch m = rx.match(trace);
         if (!m.hasMatch())
