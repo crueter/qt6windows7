@@ -26,6 +26,7 @@
 #endif
 #include "qwindowsscreen.h"
 #include "qwindowstheme.h"
+#include <QtCore/qoperatingsystemversion.h>
 
 #include <QtGui/qwindow.h>
 #include <qpa/qwindowsysteminterface.h>
